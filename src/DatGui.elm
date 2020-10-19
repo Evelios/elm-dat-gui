@@ -76,6 +76,10 @@ focus you must initialize the app with the following
         []   -- Attributes
         none -- Page Body
 
+Note: All this does is set the three attributes for `Element.focusStyle` to
+`Nothing`. If you are already using the `Element.layoutWith` function, just
+know that the focus styling will also be propagated into DatGui.
+
 -}
 focusStyle : Option
 focusStyle =
@@ -128,10 +132,12 @@ boolean options =
     inputBar
         { color = Config.color.boolean
         , element =
-            Input.checkbox [ centerY ]
+            Input.checkbox [ height fill ]
                 { onChange = options.form >> options.onClick
                 , checked = options.checked
-                , label = Input.labelLeft [] <| label [] options.text
+                , label =
+                    Input.labelLeft [ width fill, centerY ] <|
+                        label [] options.text
                 , icon = Input.defaultCheckbox
                 }
         }
@@ -146,11 +152,14 @@ string :
     }
     -> Element msg
 string options =
-    inputBar
-        { color = Config.color.string
-        , element =
+    let
+        stringLabel =
+            label [ width <| fillPortion 1 ] options.text
+
+        inputBox =
             Input.text
-                [ height <| px 20
+                [ width <| fillPortion 2
+                , height <| px 20
                 , centerY
                 , Background.color Config.color.input
                 , Config.font.family
@@ -163,8 +172,19 @@ string options =
                 { onChange = options.form >> options.onChange
                 , text = options.value
                 , placeholder = Nothing
-                , label = Input.labelLeft [ centerY ] <| label [] options.text
+                , label = Input.labelHidden options.text
                 }
+    in
+    inputBar
+        { color = Config.color.string
+        , element =
+            row
+                [ width fill
+                , centerY
+                ]
+                [ stringLabel
+                , inputBox
+                ]
         }
 
 
@@ -204,22 +224,31 @@ float :
     -> Element msg
 float options =
     let
+        floatLabel =
+            label [ width <| fillPortion 3 ] options.text
+
         slider =
             Input.slider
-                [ Background.color Config.color.input
+                [ width <| fillPortion 4
+                , Background.color Config.color.input
                 ]
                 { onChange = options.form >> options.onChange
                 , value = options.value
                 , step = Just <| options.step
                 , min = options.min
                 , max = options.max
-                , thumb = Input.defaultThumb
-                , label = Input.labelLeft [ centerY ] <| label [] options.text
+                , label = Input.labelHidden options.text
+                , thumb =
+                    Input.thumb
+                        [ width <| px 3
+                        , height <| px 20
+                        , Background.color Config.color.number
+                        ]
                 }
 
-        text =
+        numberValue =
             el
-                [ width <| px 38
+                [ width <| fillPortion 2
                 , height <| px 20
                 , Background.color Config.color.input
                 ]
@@ -239,8 +268,9 @@ float options =
                 , spacing 5
                 , centerY
                 ]
-                [ slider
-                , text
+                [ floatLabel
+                , slider
+                , numberValue
                 ]
         }
 
