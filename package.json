@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "elm-test",
-    "start": "elm-live -- DatGui.elm"
+    "start": "cd example; elm-live -- src/Main.elm"
   },
   "author": "Thomas Waters",
   "license": "SEE LICENSE IN LICENSE FILE"
