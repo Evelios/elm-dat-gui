@@ -49,8 +49,8 @@ color =
 
 
 {-| -}
-font : { font : Attribute msg, size : Int }
+font : { family : Attribute msg, size : Int }
 font =
-    { font = Font.family [ Font.typeface "Lucida Grande", Font.sansSerif ]
+    { family = Font.family [ Font.typeface "Lucida Grande", Font.sansSerif ]
     , size = 11
     }

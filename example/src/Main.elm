@@ -1,6 +1,8 @@
 module Main exposing (..)
 
 import Browser
+import DatGui
+import Element
 import Html exposing (Html)
 
 
@@ -18,12 +20,14 @@ main =
 
 
 type alias Model =
-    ()
+    { showControls : Bool
+    }
 
 
 init : Model
 init =
-    ()
+    { showControls = True
+    }
 
 
 
@@ -31,20 +35,25 @@ init =
 
 
 type Msg
-    = None
+    = ToggleControls
 
 
 update : Msg -> Model -> Model
 update msg model =
     case msg of
-        None ->
-            model
+        ToggleControls ->
+            { model | showControls = not model.showControls }
 
 
 
 -- View
 
 
-view : Model -> Html msg
-view _ =
-    Html.div [] []
+view : Model -> Html Msg
+view model =
+    Element.layout [] <|
+        DatGui.gui []
+            { toggleControls = ToggleControls
+            , showControls = model.showControls
+            , elements = []
+            }
