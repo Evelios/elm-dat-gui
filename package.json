@@ -1,0 +1,12 @@
+{
+  "name": "elm-dat-gui",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "elm-test",
+    "start": "elm-live -- DatGui.elm"
+  },
+  "author": "Thomas Waters",
+  "license": "SEE LICENSE IN LICENSE FILE"
+}
