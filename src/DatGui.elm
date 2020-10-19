@@ -1,6 +1,6 @@
 module DatGui exposing
     ( gui
-    , action
+    , action, boolean
     )
 
 {-|
@@ -13,7 +13,7 @@ module DatGui exposing
 
 # Input Types
 
-@docs action
+@docs action, boolean
 
 -}
 
@@ -24,6 +24,10 @@ import Element.Background as Background
 import Element.Border as Border
 import Element.Font as Font
 import Element.Input as Input
+
+
+
+-- Main Components
 
 
 {-| -}
@@ -65,11 +69,16 @@ gui attributes options =
     column guiAttributes guiElements
 
 
+
+-- Input Attributes
+
+
 {-| An element that triggers some sort of event.
 -}
 action :
-    { onPress : msg
-    , text : String
+    { text : String
+    , form : form
+    , onPress : form -> msg
     }
     -> Element msg
 action options =
@@ -84,10 +93,35 @@ action options =
                     [ Background.color <| Color.Extra.darken 0.05 Config.color.background
                     ]
                 ]
-                { onPress = Just options.onPress
+                { onPress = Just <| options.onPress options.form
                 , label = label [ paddingXY 5 0 ] options.text
                 }
         }
+
+
+{-| -}
+boolean :
+    { text : String
+    , form : Bool -> form
+    , checked : Bool
+    , onClick : form -> msg
+    }
+    -> Element msg
+boolean options =
+    inputBar
+        { color = Config.color.boolean
+        , element =
+            Input.checkbox []
+                { onChange = options.form >> options.onClick
+                , checked = options.checked
+                , label = Input.labelLeft [ paddingXY 5 0 ] <| label [] options.text
+                , icon = Input.defaultCheckbox
+                }
+        }
+
+
+
+-- Private
 
 
 inputBar :
@@ -120,10 +154,6 @@ inputBar options =
         [ accent
         , options.element
         ]
-
-
-
--- Private
 
 
 {-| An interface button which is used to break up sections within the gui. This

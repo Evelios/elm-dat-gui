@@ -21,12 +21,14 @@ main =
 
 type alias Model =
     { showControls : Bool
+    , boolean : Bool
     }
 
 
 init : Model
 init =
     { showControls = True
+    , boolean = True
     }
 
 
@@ -36,11 +38,12 @@ init =
 
 type Form
     = Action
+    | Boolean Bool
 
 
 type Msg
     = ToggleControls
-    | ChangeForm Form
+    | OnChange Form
 
 
 update : Msg -> Model -> Model
@@ -49,10 +52,13 @@ update msg model =
         ToggleControls ->
             { model | showControls = not model.showControls }
 
-        ChangeForm item ->
-            case item of
+        OnChange form ->
+            case form of
                 Action ->
                     model
+
+                Boolean value ->
+                    { model | boolean = value }
 
 
 
@@ -67,8 +73,15 @@ view model =
             , showControls = model.showControls
             , elements =
                 [ DatGui.action
-                    { onPress = ChangeForm Action
-                    , text = "Action Button"
+                    { text = "Action Button"
+                    , form = Action
+                    , onPress = OnChange
+                    }
+                , DatGui.boolean
+                    { text = "Boolean Box"
+                    , form = Boolean
+                    , checked = model.boolean
+                    , onClick = OnChange
                     }
                 ]
             }
