@@ -1,6 +1,6 @@
 module DatGui exposing
     ( gui
-    , action, boolean, string
+    , action, boolean, string, integer, float
     )
 
 {-|
@@ -13,7 +13,7 @@ module DatGui exposing
 
 # Input Types
 
-@docs action, boolean, string
+@docs action, boolean, string, integer, float
 
 -}
 
@@ -102,15 +102,15 @@ action options =
 boolean :
     { text : String
     , form : Bool -> form
-    , checked : Bool
     , onClick : form -> msg
+    , checked : Bool
     }
     -> Element msg
 boolean options =
     inputBar
         { color = Config.color.boolean
         , element =
-            Input.checkbox []
+            Input.checkbox [ centerY ]
                 { onChange = options.form >> options.onClick
                 , checked = options.checked
                 , label = Input.labelLeft [] <| label [] options.text
@@ -119,11 +119,12 @@ boolean options =
         }
 
 
+{-| -}
 string :
     { text : String
     , form : String -> form
-    , value : String
     , onChange : form -> msg
+    , value : String
     }
     -> Element msg
 string options =
@@ -132,6 +133,7 @@ string options =
         , element =
             Input.text
                 [ height <| px 20
+                , centerY
                 , Background.color Config.color.input
                 , Config.font.family
                 , Font.size Config.font.size
@@ -145,6 +147,83 @@ string options =
                 , placeholder = Nothing
                 , label = Input.labelLeft [ centerY ] <| label [] options.text
                 }
+        }
+
+
+{-| -}
+integer :
+    { text : String
+    , form : Int -> form
+    , onChange : form -> msg
+    , value : Int
+    , min : Int
+    , max : Int
+    , step : Int
+    }
+    -> Element msg
+integer options =
+    float
+        { text = options.text
+        , form = round >> options.form
+        , onChange = options.onChange
+        , value = toFloat options.value
+        , min = toFloat options.min
+        , max = toFloat options.max
+        , step = toFloat options.step
+        }
+
+
+{-| -}
+float :
+    { text : String
+    , form : Float -> form
+    , onChange : form -> msg
+    , value : Float
+    , min : Float
+    , max : Float
+    , step : Float
+    }
+    -> Element msg
+float options =
+    let
+        slider =
+            Input.slider
+                [ Background.color Config.color.input
+                ]
+                { onChange = options.form >> options.onChange
+                , value = options.value
+                , step = Just <| options.step
+                , min = options.min
+                , max = options.max
+                , thumb = Input.defaultThumb
+                , label = Input.labelLeft [ centerY ] <| label [] options.text
+                }
+
+        text =
+            el
+                [ width <| px 38
+                , height <| px 20
+                , Background.color Config.color.input
+                ]
+            <|
+                label
+                    [ Font.color Config.color.number
+                    , paddingXY 5 0
+                    , centerY
+                    ]
+                    (String.fromFloat options.value)
+    in
+    inputBar
+        { color = Config.color.number
+        , element =
+            row
+                [ width fill
+                , spacing 5
+                , centerY
+                ]
+                [ slider
+                , text
+                ]
         }
 
 
@@ -182,6 +261,8 @@ inputBar options =
         [ accent
         , el
             [ width fill
+            , height fill
+            , centerY
             , paddingXY 5 0
             ]
             options.element

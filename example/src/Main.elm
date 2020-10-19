@@ -23,6 +23,8 @@ type alias Model =
     { showControls : Bool
     , boolean : Bool
     , text : String
+    , integer : Int
+    , float : Float
     }
 
 
@@ -31,6 +33,8 @@ init =
     { showControls = True
     , boolean = True
     , text = ""
+    , integer = 0
+    , float = 0
     }
 
 
@@ -42,6 +46,8 @@ type Form
     = Action
     | Boolean Bool
     | Text String
+    | Integer Int
+    | Floating Float
 
 
 type Msg
@@ -66,6 +72,12 @@ update msg model =
                 Text value ->
                     { model | text = value }
 
+                Integer value ->
+                    { model | integer = value }
+
+                Floating value ->
+                    { model | float = value }
+
 
 
 -- View
@@ -86,14 +98,32 @@ view model =
                 , DatGui.boolean
                     { text = "Boolean Box"
                     , form = Boolean
-                    , checked = model.boolean
                     , onClick = OnChange
+                    , checked = model.boolean
                     }
                 , DatGui.string
                     { text = "Text Value"
                     , form = Text
-                    , value = model.text
                     , onChange = OnChange
+                    , value = model.text
+                    }
+                , DatGui.integer
+                    { text = "Integer"
+                    , form = Integer
+                    , onChange = OnChange
+                    , value = model.integer
+                    , min = 0
+                    , max = 100
+                    , step = 1
+                    }
+                , DatGui.float
+                    { text = "Float"
+                    , form = Floating
+                    , onChange = OnChange
+                    , value = model.float
+                    , min = 0
+                    , max = 10
+                    , step = 0.1
                     }
                 ]
             }
