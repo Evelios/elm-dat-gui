@@ -4,14 +4,15 @@ A lightweight graphical user interface for changing variables in Elm. This packa
 
 ## Example
 
-For a full example check out the [example source code](https://github.com/Evelios/elm-dat-gui/tree/master/example) to see the extra information needed
+For a full example check out the [example source code](https://github.com/Evelios/elm-dat-gui/blob/master/example/src/Main.elm) to see the extra information needed
 
 ```elm
 import Dat
 
 view : Model -> Html Msg
 view model =
-    Element.layoutWith { options = [ Dat.focusStyle ] } [] <| 
+    Element.layoutWith 
+        { options = [ Dat.focusStyle ] } [] <| 
         Dat.gui []
             { toggleControls = ToggleControls
             , showControls = model.showControls

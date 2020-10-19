@@ -6,7 +6,43 @@ module Dat exposing
 {-| `Dat.gui` provides a low footprint way of easily tweaking variables and
 settings within your elm project. This project is based off of the
 [elm-ui](https://package.elm-lang.org/packages/mdgriffith/elm-ui/latest/)
-library.
+library. The main focus of this library is to provide easy and quick access
+to parameters within your application. This package api is different from
+the original [dat.GUI](https://github.com/dataarts/dat.gui) application
+because of language differences between JavaScript and Elm. However, the same
+clean interface is provided.
+
+The way this package works is to think of the gui as a form element with
+different parameters within the form. This means that you have to keep
+track of all the parameter updating as you would from other forms in the
+`update` function.
+
+
+# Structure
+
+The gui is structured around passing `OnChange` events to the update function
+so that you can update your model with new values from the gui. The gui elements
+take in a `Form` type with each of the variables you are controlling within
+your application. Here, I'm using very generic names for the types so don't
+think that you need to stick to my naming conventions. In fact, you should
+use something more descriptive to your project.
+
+    type Form
+        = Action
+        | Boolean Bool
+        | Text String
+        | Integer Int
+        | Floating Float
+
+The gui also needs the messages to be able to change values within your project
+as well as toggling the open/close state of the gui window. To change the
+values of all the elements in the project, we use a single message `OnChange`
+which takes the `Form` object that is being changed. This gives the new
+value to change your model.
+
+    type Msg
+        = ToggleControls
+        | OnChange Form
 
 
 # Main
@@ -15,6 +51,10 @@ library.
 
 
 # Input Types
+
+These are all the different variable/action types which can be added and changed
+from the gui. Each type needs to be added to the main gui view function and
+added with a new `Form` handler.
 
 @docs action, boolean, string, integer, float
 
@@ -32,7 +72,13 @@ import Element.Input as Input
 -- Main Components
 
 
-{-| -}
+{-| The main view function for the gui. This is the container wrapper for the
+whole gui. To add this to your application, you are most likely going to need
+to use the [Element.inFront](https://package.elm-lang.org/packages/mdgriffith/elm-ui/latest/Element#inFront)
+function in order to place this above everything else you are trying to put
+into your application. This however, is up to you. In the attributes is
+where you would put any location information for the gui.
+-}
 gui :
     List (Attribute msg)
     ->
@@ -75,13 +121,13 @@ gui attributes options =
 focus you must initialize the app with the following
 
     Element.layoutWith
-        { options = [ DatGui.focusStyle ] }
+        { options = [ Dat.focusStyle ] }
         []   -- Attributes
         none -- Page Body
 
 Note: All this does is set the three attributes for `Element.focusStyle` to
 `Nothing`. If you are already using the `Element.layoutWith` function, just
-know that the focus styling will also be propagated into DatGui.
+know that the focus styling will also be propagated into Dat.
 
 -}
 focusStyle : Option
@@ -97,7 +143,15 @@ focusStyle =
 -- Input Attributes
 
 
-{-| An element that triggers some sort of event.
+{-| An element that triggers some sort of event. This is used to send an
+event to the `update` function. In this case it sends the `Action` message.
+
+    Dat.action
+        { text = "Action Button"
+        , form = Action
+        , onPress = OnChange
+        }
+
 -}
 action :
     { text : String
@@ -123,7 +177,16 @@ action options =
         }
 
 
-{-| -}
+{-| Input selection for toggling boolean values.
+
+    Dat.boolean
+        { text = "Boolean Box"
+        , form = Boolean
+        , onClick = OnChange
+        , checked = model.boolean
+        }
+
+-}
 boolean :
     { text : String
     , form : Bool -> form
@@ -146,7 +209,18 @@ boolean options =
         }
 
 
-{-| -}
+{-| Text area selection for relatively short string values. This provides
+generally a several word length box. This is good for changing titles,
+names, and the like.
+
+    Dat.string
+        { text = "Text Value"
+        , form = Text
+        , onChange = OnChange
+        , value = model.text
+        }
+
+-}
 string :
     { text : String
     , form : String -> form
@@ -191,7 +265,21 @@ string options =
         }
 
 
-{-| -}
+{-| An input slider for changing integer values. The slider step can be changed
+to provide more or less precision over the input values between the upper
+and lower values.
+
+    Dat.integer
+        { text = "Integer"
+        , form = Integer
+        , onChange = OnChange
+        , value = model.integer
+        , min = 0
+        , max = 100
+        , step = 1
+        }
+
+-}
 integer :
     { text : String
     , form : Int -> form
@@ -214,7 +302,24 @@ integer options =
         }
 
 
-{-| -}
+{-| Similar to the integer slider for selecting a values within a range. This
+selection provides a fine granularity over your input range. For this slider,
+the step value is much more important. You want to make sure that the step
+value is small enough so that the input slider is smooth. However, if you
+have some function that updates on every value change, small step precisions
+could cause lag when selecting new values.
+
+    Dat.float
+        { text = "Float"
+        , form = Floating
+        , onChange = OnChange
+        , value = model.float
+        , min = 0
+        , max = 10
+        , step = 0.1
+        }
+
+-}
 float :
     { text : String
     , form : Float -> form
