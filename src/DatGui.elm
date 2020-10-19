@@ -1,6 +1,6 @@
 module DatGui exposing
     ( gui
-    , action, boolean
+    , action, boolean, string
     )
 
 {-|
@@ -13,11 +13,10 @@ module DatGui exposing
 
 # Input Types
 
-@docs action, boolean
+@docs action, boolean, string
 
 -}
 
-import Color.Extra
 import Config
 import Element exposing (..)
 import Element.Background as Background
@@ -90,11 +89,11 @@ action options =
                 , width fill
                 , pointer
                 , mouseOver
-                    [ Background.color <| Color.Extra.darken 0.05 Config.color.background
+                    [ Background.color Config.color.border
                     ]
                 ]
                 { onPress = Just <| options.onPress options.form
-                , label = label [ paddingXY 5 0 ] options.text
+                , label = label [] options.text
                 }
         }
 
@@ -114,8 +113,37 @@ boolean options =
             Input.checkbox []
                 { onChange = options.form >> options.onClick
                 , checked = options.checked
-                , label = Input.labelLeft [ paddingXY 5 0 ] <| label [] options.text
+                , label = Input.labelLeft [] <| label [] options.text
                 , icon = Input.defaultCheckbox
+                }
+        }
+
+
+string :
+    { text : String
+    , form : String -> form
+    , value : String
+    , onChange : form -> msg
+    }
+    -> Element msg
+string options =
+    inputBar
+        { color = Config.color.string
+        , element =
+            Input.text
+                [ height <| px 20
+                , Background.color Config.color.input
+                , Config.font.family
+                , Font.size Config.font.size
+                , Font.color Config.color.string
+                , Border.width 0
+                , Border.rounded 0
+                , paddingXY 5 4
+                ]
+                { onChange = options.form >> options.onChange
+                , text = options.value
+                , placeholder = Nothing
+                , label = Input.labelLeft [ centerY ] <| label [] options.text
                 }
         }
 
@@ -143,7 +171,7 @@ inputBar options =
         [ width fill
         , height <| px 28
         , Background.color Config.color.background
-        , Border.color <| Color.Extra.lighten 0.07 Config.color.background
+        , Border.color Config.color.border
         , Border.widthEach
             { top = 0
             , bottom = 1
@@ -152,7 +180,11 @@ inputBar options =
             }
         ]
         [ accent
-        , options.element
+        , el
+            [ width fill
+            , paddingXY 5 0
+            ]
+            options.element
         ]
 
 
@@ -183,7 +215,7 @@ sectionButton attributes options =
 {-| Text elements within the gui interface.
 -}
 label : List (Attribute msg) -> String -> Element msg
-label attributes string =
+label attributes value =
     el
         ([ Font.color Config.color.font
          , Config.font.family
@@ -191,4 +223,4 @@ label attributes string =
          ]
             ++ attributes
         )
-        (text string)
+        (text value)

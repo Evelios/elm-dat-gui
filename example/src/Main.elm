@@ -22,6 +22,7 @@ main =
 type alias Model =
     { showControls : Bool
     , boolean : Bool
+    , text : String
     }
 
 
@@ -29,6 +30,7 @@ init : Model
 init =
     { showControls = True
     , boolean = True
+    , text = ""
     }
 
 
@@ -39,6 +41,7 @@ init =
 type Form
     = Action
     | Boolean Bool
+    | Text String
 
 
 type Msg
@@ -59,6 +62,9 @@ update msg model =
 
                 Boolean value ->
                     { model | boolean = value }
+
+                Text value ->
+                    { model | text = value }
 
 
 
@@ -82,6 +88,12 @@ view model =
                     , form = Boolean
                     , checked = model.boolean
                     , onClick = OnChange
+                    }
+                , DatGui.string
+                    { text = "Text Value"
+                    , form = Text
+                    , value = model.text
+                    , onChange = OnChange
                     }
                 ]
             }

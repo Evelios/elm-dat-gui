@@ -16,24 +16,32 @@ import Element.Font as Font
 
 {-| -}
 color :
-    { number : Color
+    { font : Color
+    , number : Color
     , boolean : Color
     , string : Color
     , function : Color
     , background : Color
     , saveRow : Color
     , button : Color
-    , font : Color
+    , border : Color
+    , input : Color
     }
 color =
+    let
+        background =
+            hexToColor "#1a1a1a"
+    in
     { font = hexToColor "#eeeeee"
     , number = hexToColor "#2fa1d6"
     , boolean = hexToColor "#806787"
     , string = hexToColor "#1ed36f"
     , function = hexToColor "#e61d5f"
-    , background = hexToColor "#1a1a1a"
+    , background = background
     , saveRow = hexToColor "#dad5cb"
     , button = hexToColor "#000000"
+    , input = lighten 0.07 background
+    , border = lighten 0.05 background
     }
 
 
