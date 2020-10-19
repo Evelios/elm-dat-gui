@@ -23,28 +23,17 @@ color :
     , background : Color
     , saveRow : Color
     , button : Color
-    , border : Color
-    , input : Color
     , font : Color
     }
 color =
-    let
-        background =
-            hexToColor "#1a1a1a"
-
-        saveRow =
-            hexToColor "#dad5cb"
-    in
     { font = hexToColor "#eeeeee"
     , number = hexToColor "#2fa1d6"
     , boolean = hexToColor "#806787"
     , string = hexToColor "#1ed36f"
     , function = hexToColor "#e61d5f"
-    , background = background
-    , saveRow = saveRow
-    , button = darken 0.1 saveRow
-    , border = lighten 0.07 background
-    , input = lighten 0.085 background
+    , background = hexToColor "#1a1a1a"
+    , saveRow = hexToColor "#dad5cb"
+    , button = hexToColor "#000000"
     }
 
 

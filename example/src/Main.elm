@@ -34,8 +34,13 @@ init =
 -- Update
 
 
+type Form
+    = Action
+
+
 type Msg
     = ToggleControls
+    | ChangeForm Form
 
 
 update : Msg -> Model -> Model
@@ -43,6 +48,11 @@ update msg model =
     case msg of
         ToggleControls ->
             { model | showControls = not model.showControls }
+
+        ChangeForm item ->
+            case item of
+                Action ->
+                    model
 
 
 
@@ -55,5 +65,10 @@ view model =
         DatGui.gui []
             { toggleControls = ToggleControls
             , showControls = model.showControls
-            , elements = []
+            , elements =
+                [ DatGui.action
+                    { onPress = ChangeForm Action
+                    , text = "Action Button"
+                    }
+                ]
             }
