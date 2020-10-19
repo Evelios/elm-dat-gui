@@ -1,5 +1,5 @@
 module DatGui exposing
-    ( gui
+    ( gui, focusStyle
     , action, boolean, string, integer, float
     )
 
@@ -8,7 +8,7 @@ module DatGui exposing
 
 # Main
 
-@docs gui
+@docs gui, focusStyle
 
 
 # Input Types
@@ -66,6 +66,24 @@ gui attributes options =
                 }
     in
     column guiAttributes guiElements
+
+
+{-| This removes the default focus style for elm-ui. In order to remove the normal
+focus you must initialize the app with the following
+
+    Element.layoutWith
+        { options = [ DatGui.focusStyle ] }
+        []   -- Attributes
+        none -- Page Body
+
+-}
+focusStyle : Option
+focusStyle =
+    Element.focusStyle
+        { borderColor = Nothing
+        , backgroundColor = Nothing
+        , shadow = Nothing
+        }
 
 
 

@@ -85,7 +85,7 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    Element.layout [] <|
+    Element.layoutWith { options = [ DatGui.focusStyle ] } [] <|
         DatGui.gui []
             { toggleControls = ToggleControls
             , showControls = model.showControls
