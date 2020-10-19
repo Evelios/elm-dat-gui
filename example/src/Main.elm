@@ -1,7 +1,7 @@
 module Main exposing (..)
 
 import Browser
-import DatGui
+import Dat
 import Element
 import Html exposing (Html)
 
@@ -85,29 +85,29 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    Element.layoutWith { options = [ DatGui.focusStyle ] } [] <|
-        DatGui.gui []
+    Element.layoutWith { options = [ Dat.focusStyle ] } [] <|
+        Dat.gui []
             { toggleControls = ToggleControls
             , showControls = model.showControls
             , elements =
-                [ DatGui.action
+                [ Dat.action
                     { text = "Action Button"
                     , form = Action
                     , onPress = OnChange
                     }
-                , DatGui.boolean
+                , Dat.boolean
                     { text = "Boolean Box"
                     , form = Boolean
                     , onClick = OnChange
                     , checked = model.boolean
                     }
-                , DatGui.string
+                , Dat.string
                     { text = "Text Value"
                     , form = Text
                     , onChange = OnChange
                     , value = model.text
                     }
-                , DatGui.integer
+                , Dat.integer
                     { text = "Integer"
                     , form = Integer
                     , onChange = OnChange
@@ -116,7 +116,7 @@ view model =
                     , max = 100
                     , step = 1
                     }
-                , DatGui.float
+                , Dat.float
                     { text = "Float"
                     , form = Floating
                     , onChange = OnChange

@@ -1,9 +1,12 @@
-module DatGui exposing
+module Dat exposing
     ( gui, focusStyle
     , action, boolean, string, integer, float
     )
 
-{-|
+{-| `Dat.gui` provides a low footprint way of easily tweaking variables and
+settings within your elm project. This project is based off of the
+[elm-ui](https://package.elm-lang.org/packages/mdgriffith/elm-ui/latest/)
+library.
 
 
 # Main
@@ -111,7 +114,7 @@ action options =
                 , width fill
                 , pointer
                 , mouseOver
-                    [ Background.color Config.color.border
+                    [ Background.color Config.color.backgroundHover
                     ]
                 ]
                 { onPress = Just <| options.onPress options.form

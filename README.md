@@ -7,33 +7,33 @@ A lightweight graphical user interface for changing variables in Elm. This packa
 For a full example check out the [example source code](https://github.com/Evelios/elm-dat-gui/tree/master/example) to see the extra information needed
 
 ```elm
-import DatGui
+import Dat
 
 view : Model -> Html Msg
 view model =
-    Element.layoutWith { options = [ DatGui.focusStyle ] } [] <|
-        DatGui.gui []
+    Element.layoutWith { options = [ Dat.focusStyle ] } [] <| 
+        Dat.gui []
             { toggleControls = ToggleControls
             , showControls = model.showControls
             , elements =
-                [ DatGui.action
+                [ Dat.action
                     { text = "Action Button"
                     , form = Action
                     , onPress = OnChange
                     }
-                , DatGui.boolean
+                , Dat.boolean
                     { text = "Boolean Box"
                     , form = Boolean
                     , onClick = OnChange
                     , checked = model.boolean
                     }
-                , DatGui.string
+                , Dat.string
                     { text = "Text Value"
                     , form = Text
                     , onChange = OnChange
                     , value = model.text
                     }
-                , DatGui.integer
+                , Dat.integer
                     { text = "Integer"
                     , form = Integer
                     , onChange = OnChange
@@ -42,7 +42,7 @@ view model =
                     , max = 100
                     , step = 1
                     }
-                , DatGui.float
+                , Dat.float
                     { text = "Float"
                     , form = Floating
                     , onChange = OnChange
@@ -51,7 +51,8 @@ view model =
                     , max = 10
                     , step = 0.1
                     }
-            ]
+                ]
+            }
 
 -- Accompanying Types
 

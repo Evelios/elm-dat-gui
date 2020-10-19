@@ -22,6 +22,7 @@ color :
     , string : Color
     , function : Color
     , background : Color
+    , backgroundHover : Color
     , saveRow : Color
     , button : Color
     , border : Color
@@ -38,6 +39,7 @@ color =
     , string = hexToColor "#1ed36f"
     , function = hexToColor "#e61d5f"
     , background = background
+    , backgroundHover = darken 0.05 background
     , saveRow = hexToColor "#dad5cb"
     , button = hexToColor "#000000"
     , input = lighten 0.07 background
